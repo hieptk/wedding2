@@ -4602,19 +4602,27 @@
       });
 
       // -------------------
-      // Start music on first gesture (iOS + Desktop)
+      // Attempt autoplay on page load
       // -------------------
+      safePlay().catch(() => {});
+
+      // Fallback: start music on first gesture if autoplay was blocked
       function startMusicOnFirstGesture() {
         if (musicStarted) return;
         safePlay().catch(() => {});
       }
 
-      // iOS
       document.addEventListener("touchstart", startMusicOnFirstGesture, {
         once: true,
         passive: true,
       });
-      // Desktop
+      document.addEventListener("touchmove", startMusicOnFirstGesture, {
+        once: true,
+        passive: true,
+      });
+      document.addEventListener("scroll", startMusicOnFirstGesture, {
+        once: true,
+      });
       document.addEventListener("mousedown", startMusicOnFirstGesture, {
         once: true,
       });
