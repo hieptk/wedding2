@@ -9,6 +9,8 @@
     <meta name="keywords" content="" />
     <meta name="description" content="Khánh Hiệp &#38; Nguyên Hạnh" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light only" />
+    <meta name="supported-color-schemes" content="light only" />
     <script type="text/javascript">
       window.ladi_viewport = function () {
         var screenWidth = window.innerWidth;
@@ -203,6 +205,10 @@
       nav,
       section {
         display: block;
+      }
+      :root, body {
+        color-scheme: only light !important;
+        forced-color-adjust: none;
       }
       body {
         line-height: 1;
