@@ -1972,6 +1972,41 @@
         width: 420px;
       }
 
+      /* Hide all sections except the cover until invitation is opened */
+      .ladi-wraper.invitation-closed #SECTION3,
+      .ladi-wraper.invitation-closed #SECTION7,
+      .ladi-wraper.invitation-closed #SECTION13,
+      .ladi-wraper.invitation-closed #SECTION8,
+      .ladi-wraper.invitation-closed #SECTION9,
+      .ladi-wraper.invitation-closed #SECTION11,
+      .ladi-wraper.invitation-closed #SECTION12 {
+        display: none;
+      }
+      .ladi-wraper.invitation-closed #IMAGE15 {
+        cursor: pointer;
+      }
+      .ladi-wraper.invitation-closed #GROUP1,
+      .ladi-wraper.invitation-closed #IMAGE13,
+      .ladi-wraper.invitation-closed #IMAGE4,
+      .ladi-wraper.invitation-closed #GROUP3,
+      .ladi-wraper.invitation-closed #GROUP7,
+      .ladi-wraper.invitation-closed #IMAGE8,
+      .ladi-wraper.invitation-closed #IMAGE9,
+      .ladi-wraper.invitation-closed #IMAGE11,
+      .ladi-wraper.invitation-closed #IMAGE10,
+      .ladi-wraper.invitation-closed #IMAGE12 {
+        opacity: 0;
+      }
+      .ladi-wraper.invitation-closed #IMAGE5 {
+        top: 32.851px;
+      }
+      .invitation-reveal {
+        animation: revealInvitation 1s ease forwards;
+      }
+      @keyframes revealInvitation {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
 
       @font-face {
         font-family: "MUZUViWSVAtSEFTVEVHSSPVEY";
@@ -2351,7 +2386,7 @@
         left: 28.4891px;
       }
       #IMAGE5 > .ladi-image > .ladi-image-background {
-        background-image: url("resources/s650x700/6322a62f2dad980013bb5005/thiep-thanh-dat-element_0025_9-20251010160529-oa95t.png");
+        background-image: url("resources/closed_envelope3.png");
       }
       #GROUP3,
       #IMAGE7,
@@ -4421,10 +4456,83 @@
         background-image: none !important;
       }
     </style>
+    <!-- MUSIC + SVG TOGGLE (iOS & Desktop friendly) -->
+    <style>
+      #music-toggle {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 56px;
+        height: 56px;
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+        cursor: pointer;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+        transition:
+          transform 0.18s ease,
+          box-shadow 0.18s ease;
+        backdrop-filter: blur(6px);
+      }
+      #music-toggle:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.16);
+      }
 
-      isPlaying = false;
-      updateIcon();
-    </script>
+      #music-toggle svg {
+        width: 30px;
+        height: 30px;
+        transition:
+          transform 0.18s ease,
+          opacity 0.18s ease;
+      }
+
+      #music-toggle.playing {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 243, 224, 0.95),
+          rgba(255, 250, 240, 0.95)
+        );
+      }
+      #music-toggle.playing svg {
+        filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.08));
+      }
+
+      #music-toggle.playing::after {
+        content: "";
+        position: absolute;
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        right: -8px;
+        bottom: -8px;
+        z-index: -1;
+        animation: musicpulse 1.6s infinite;
+        opacity: 0.14;
+        background: radial-gradient(
+          circle,
+          rgba(255, 200, 100, 0.35),
+          transparent 40%
+        );
+      }
+      @keyframes musicpulse {
+        0% {
+          transform: scale(0.85);
+          opacity: 0.18;
+        }
+        70% {
+          transform: scale(1.25);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1.4);
+          opacity: 0;
+        }
+      }
+    </style>
   </head>
   <body class="lazyload">
     <div class="ladi-wraper">
@@ -5670,18 +5778,18 @@
     ></script>
     <script id="script_event_data" type="application/json">
       {
-        "GROUP3": { "a": "group", "D": "fadeInUp", "A": "0.5s" },
-        "IMAGE8": { "a": "image", "D": "fadeInUp", "A": "0.5s" },
-        "IMAGE10": { "a": "image", "D": "fadeInUp", "A": "1.5s" },
-        "IMAGE11": { "a": "image", "D": "fadeInUp", "A": "1.5s" },
-        "IMAGE12": { "a": "image", "D": "fadeInUp", "A": "0.5s" },
-        "IMAGE13": { "a": "image", "D": "fadeInUp", "A": "0.5s" },
+        "GROUP3": { "a": "group" },
+        "IMAGE8": { "a": "image" },
+        "IMAGE10": { "a": "image" },
+        "IMAGE11": { "a": "image" },
+        "IMAGE12": { "a": "image" },
+        "IMAGE13": { "a": "image" },
         "HEADLINE4": {
           "option.is_product_mapping_name_custom": true,
           "a": "headline"
         },
-        "GROUP5": { "a": "group", "D": "fadeInUp", "A": "0s" },
-        "GROUP7": { "a": "group", "D": "fadeInUp", "A": "1s" },
+        "GROUP5": { "a": "group" },
+        "GROUP7": { "a": "group" },
         "HEADLINE5": {
           "option.is_product_mapping_name_custom": true,
           "a": "headline",
@@ -6302,6 +6410,216 @@
         }
       })();
     </script>
+    <script type="text/javascript">
+      // Open invitation on IMAGE15 click
+      (function () {
+        var wrapper = document.querySelector(".ladi-wraper");
+        if (wrapper) wrapper.classList.add("invitation-closed");
+
+        var openBtn = document.getElementById("IMAGE15");
+        if (!openBtn) return;
+
+        openBtn.addEventListener("click", function () {
+          var envEl = document.getElementById("IMAGE5");
+          var envBg = document.querySelector("#IMAGE5 > .ladi-image > .ladi-image-background");
+          var openOverlay = document.createElement("div");
+          openOverlay.style.cssText = "position:absolute;top:0;left:0;width:100%;height:100%;background-image:url('resources/s650x700/6322a62f2dad980013bb5005/thiep-thanh-dat-element_0025_9-20251010160529-oa95t.png');background-size:cover;background-position:center;opacity:0;transition:opacity 0.8s ease;";
+          if (envBg) envBg.parentNode.appendChild(openOverlay);
+          openOverlay.offsetHeight;
+          openOverlay.style.opacity = "1";
+
+          // Fade in SECTION1 elements together with the open envelope
+          wrapper.classList.remove("invitation-closed");
+          var s1Ids = ["GROUP1","IMAGE13","IMAGE4","GROUP3","GROUP7","IMAGE8","IMAGE9","IMAGE11","IMAGE10","IMAGE12"];
+          s1Ids.forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) {
+              el.style.opacity = "0";
+              el.style.transition = "opacity 0.8s ease";
+              setTimeout(function () { el.style.opacity = "1"; }, 50);
+            }
+          });
+
+          setTimeout(function () {
+            if (envBg) envBg.style.backgroundImage = 'url("resources/s650x700/6322a62f2dad980013bb5005/thiep-thanh-dat-element_0025_9-20251010160529-oa95t.png")';
+            openOverlay.remove();
+            // Animate revealed sections
+            var sections = ["SECTION3","SECTION7","SECTION13","SECTION8","SECTION9","SECTION11"];
+            sections.forEach(function (id, i) {
+              var el = document.getElementById(id);
+              if (el) {
+                el.style.opacity = "0";
+                el.style.transform = "translateY(30px)";
+                el.style.transition = "opacity 0.7s ease, transform 0.7s ease";
+                setTimeout(function () {
+                  el.style.opacity = "1";
+                  el.style.transform = "translateY(0)";
+                }, 300 + i * 150);
+              }
+            });
+          }, 800);
+
+        });
+      })();
+    </script>
+    <script type="text/javascript">
+      // Scroll-reveal animation (replaces LadiPage animation system)
+      (function () {
+        var ids = [
+          "HEADLINE5",
+          "HEADLINE10","HEADLINE11","HEADLINE30","HEADLINE305","HEADLINE31",
+          "HEADLINE33","HEADLINE14","HEADLINE13","HEADLINE34","HEADLINE39",
+          "HEADLINE78","HEADLINE83","HEADLINE84","HEADLINE85","HEADLINE89",
+          "BUTTON2","GROUP11","GROUP38",
+          "GROUP12","GROUP39","GROUP21","HEADLINE15","BOX10","GROUP28",
+          "GROUP32","HEADLINE95","HEADLINE96","GROUP14","HEADLINE16",
+          "HEADLINE17","HEADLINE105","GROUP15","GROUP30","GROUP25","GROUP26",
+          "IMAGE34","HEADLINE106","HEADLINE107","HEADLINE108","GROUP66",
+          "BOX12","BOX13"
+        ];
+
+        // Hide all animated elements initially
+        ids.forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.classList.add("ladi-animation-hidden");
+        });
+
+        // Reveal on scroll using IntersectionObserver
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              var el = entry.target;
+              el.classList.remove("ladi-animation-hidden");
+              el.classList.add("ladi-animation");
+              observer.unobserve(el);
+            }
+          });
+        }, { threshold: 0.15 });
+
+        ids.forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) observer.observe(el);
+        });
+      })();
+    </script>
+    <div
+      id="music-toggle"
+      role="button"
+      aria-label="Toggle music"
+      title="Toggle music"
+    >
+      <!-- SOUND ON (waves) -->
+      <svg
+        id="icon-on"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#2b2b2b"
+        stroke-width="1.6"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        style="display: none"
+      >
+        <polygon points="3 9 7 9 11 5 11 19 7 15 3 15"></polygon>
+        <path d="M14 9.5a3 3 0 0 1 0 5"></path>
+        <path d="M16.5 7a6 6 0 0 1 0 10"></path>
+      </svg>
+      <!-- SOUND OFF (muted) -->
+      <svg
+        id="icon-off"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#2b2b2b"
+        stroke-width="1.6"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <polygon points="3 9 7 9 11 5 11 19 7 15 3 15"></polygon>
+        <line x1="16" y1="8" x2="21" y2="13"></line>
+        <line x1="21" y1="8" x2="16" y2="13"></line>
+      </svg>
+    </div>
+
+    <script>
+      (function () {
+        var musicList = ["resources/song.mp3"];
+        var index = 0;
+        var audio = new Audio(musicList[index]);
+        audio.loop = false;
+        var musicStarted = false;
+        var isPlaying = false;
+        var toggleBtn = document.getElementById("music-toggle");
+        var iconOn = document.getElementById("icon-on");
+        var iconOff = document.getElementById("icon-off");
+
+        function updateIcon() {
+          if (isPlaying) {
+            iconOn.style.display = "block";
+            iconOff.style.display = "none";
+            toggleBtn.classList.add("playing");
+          } else {
+            iconOn.style.display = "none";
+            iconOff.style.display = "block";
+            toggleBtn.classList.remove("playing");
+          }
+        }
+
+        function safePlay() {
+          return audio.play().then(function () {
+            musicStarted = true;
+            isPlaying = true;
+            updateIcon();
+          }).catch(function (err) {
+            throw err;
+          });
+        }
+
+        function pauseMusic() {
+          audio.pause();
+          isPlaying = false;
+          updateIcon();
+        }
+
+        audio.addEventListener("ended", function () {
+          index = (index + 1) % musicList.length;
+          audio.src = musicList[index];
+          audio.play().then(function () {
+            isPlaying = true;
+            updateIcon();
+          }).catch(function () {
+            isPlaying = false;
+            updateIcon();
+          });
+        });
+
+        // Attempt autoplay
+        safePlay().catch(function () {});
+
+        // Fallback: start on first gesture
+        function startOnGesture() {
+          if (musicStarted) return;
+          safePlay().catch(function () {});
+        }
+        document.addEventListener("touchstart", startOnGesture, { once: true, passive: true });
+        document.addEventListener("touchmove", startOnGesture, { once: true, passive: true });
+        document.addEventListener("scroll", startOnGesture, { once: true });
+        document.addEventListener("mousedown", startOnGesture, { once: true });
+        document.addEventListener("wheel", startOnGesture, { once: true });
+
+        // Toggle button
+        toggleBtn.addEventListener("click", function () {
+          if (!musicStarted) {
+            safePlay().catch(function () { isPlaying = false; updateIcon(); });
+            return;
+          }
+          if (isPlaying) {
+            pauseMusic();
+          } else {
+            safePlay().catch(function () { isPlaying = false; updateIcon(); });
+          }
+        });
+      })();
+    </script>
+
     <script id="script_ladipage_run" type="text/javascript">
       (function () {
         var run = function () {
